@@ -28,14 +28,21 @@ while True:
 
         client.send(command)
 
-        if command == b'exit':
+        if command == 'exit':
                 break
 
-        output = client.recv(1024)
+        output = client.recv(4096)
+
+        if not output:
+                print("Connection closed by server")
+                break
+
         output = output.decode()
-        if output == 'no stdout':
+
+        if output == "no stdout":
                 print()
         else:
                 print(output)
+
 
 client.close()
